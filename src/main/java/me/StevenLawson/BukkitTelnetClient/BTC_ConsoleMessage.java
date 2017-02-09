@@ -22,6 +22,7 @@ import java.awt.Color;
 
 public class BTC_ConsoleMessage
 {
+
     private final String message;
     private Color color;
 

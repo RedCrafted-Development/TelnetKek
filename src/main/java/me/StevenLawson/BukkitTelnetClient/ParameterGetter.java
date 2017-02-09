@@ -24,5 +24,6 @@ import java.lang.annotation.*;
 @Target(value = ElementType.METHOD)
 public @interface ParameterGetter
 {
+
     public String name();
 }

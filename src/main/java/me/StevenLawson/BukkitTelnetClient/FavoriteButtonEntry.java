@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class FavoriteButtonEntry extends ConfigEntry
 {
+
     private String label;
     private String command;
 
@@ -55,6 +56,7 @@ public class FavoriteButtonEntry extends ConfigEntry
 
     public static class FavoriteButtonEntryList extends ConfigEntryList<FavoriteButtonEntry>
     {
+
         public FavoriteButtonEntryList()
         {
             super(new ArrayList<FavoriteButtonEntry>(), FavoriteButtonEntry.class);

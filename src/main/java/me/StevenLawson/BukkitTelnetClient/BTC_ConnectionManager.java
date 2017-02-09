@@ -33,6 +33,7 @@ import org.apache.commons.net.telnet.TelnetClient;
 
 public class BTC_ConnectionManager
 {
+
     private static final Pattern LOGIN_MESSAGE = Pattern.compile("\\[.+?@BukkitTelnet\\]\\$ Logged in as (.+)\\.");
 
     private final TelnetClient telnetClient = new TelnetClient();
@@ -54,7 +55,7 @@ public class BTC_ConnectionManager
         btc.getTxtServer().setEnabled(false);
         btc.getBtnDisconnect().setEnabled(true);
 
-        btc.writeToConsole(new BTC_ConsoleMessage("Connecting to " + hostname + ":" + port + "...", Color.RED));
+        btc.writeToConsole(new BTC_ConsoleMessage("Connecting to " + hostname + ":" + port + "", Color.RED));
 
         this.hostname = hostname;
         this.port = port;
@@ -270,16 +271,16 @@ public class BTC_ConnectionManager
         {
             if (loginName == null)
             {
-                title = String.format("FreedomTelnetClient - %s - %s:%d", BukkitTelnetClient.VERSION_STRING, hostname, port);
+                title = String.format("TelnetKek - %s - %s:%d", BukkitTelnetClient.VERSION_STRING, hostname, port);
             }
             else
             {
-                title = String.format("FreedomTelnetClient - %s - %s@%s:%d", BukkitTelnetClient.VERSION_STRING, loginName, hostname, port);
+                title = String.format("TelnetKek - %s - %s@%s:%d", BukkitTelnetClient.VERSION_STRING, loginName, hostname, port);
             }
         }
         else
         {
-            title = String.format("FreedomTelnetClient - %s - Disconnected", BukkitTelnetClient.VERSION_STRING);
+            title = String.format("TelnetKek - %s - Disconnected", BukkitTelnetClient.VERSION_STRING);
         }
 
         mainPanel.setTitle(title);

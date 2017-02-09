@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 public class BTC_FavoriteButtonsPanel extends JPanel
 {
+
     public BTC_FavoriteButtonsPanel(final Collection<FavoriteButtonEntry> buttonList)
     {
         super.setLayout(new GridBagLayout());

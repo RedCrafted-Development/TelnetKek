@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 public class BTC_TelnetMessage extends BTC_ConsoleMessage
 {
+
     private static final String PATTERN_PREFIX = "^:\\[.+? INFO\\]: ";
     private static final Color PURPLE = new Color(128, 0, 128);
     private static final Color DARK_GREEN = new Color(86, 130, 3);

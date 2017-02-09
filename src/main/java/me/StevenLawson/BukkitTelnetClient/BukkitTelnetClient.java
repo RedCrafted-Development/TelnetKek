@@ -25,7 +25,8 @@ import java.util.logging.Logger;
 
 public class BukkitTelnetClient
 {
-    public static final String VERSION_STRING = "v2.0.5";
+
+    public static final String VERSION_STRING = "v1.0";
     public static final Logger LOGGER = Logger.getLogger(BukkitTelnetClient.class.getName());
     public static BTC_MainPanel mainPanel = null;
     public static BTC_ConfigLoader config = new BTC_ConfigLoader();
@@ -34,7 +35,7 @@ public class BukkitTelnetClient
     {
         config.load(true);
 
-        findAndSetLookAndFeel("Windows");
+        findAndSetLookAndFeel("CDE");
 
         java.awt.EventQueue.invokeLater(new Runnable()
         {

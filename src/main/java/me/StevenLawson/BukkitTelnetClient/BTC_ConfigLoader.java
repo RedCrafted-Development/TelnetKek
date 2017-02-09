@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 
 public class BTC_ConfigLoader
 {
+
     private static final String SETTINGS_FILE = "ftc_settings.xml";
 
     private final ServerEntry.ServerEntryList servers = new ServerEntry.ServerEntryList();
@@ -77,12 +78,9 @@ public class BTC_ConfigLoader
 
             return true;
         }
-        else
+        else if (verbose)
         {
-            if (verbose)
-            {
-                System.out.println("Can't load " + SETTINGS_FILE + ".");
-            }
+            System.out.println("Can't load " + SETTINGS_FILE + ".");
         }
 
         return false;

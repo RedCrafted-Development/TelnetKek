@@ -34,6 +34,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 public class BTC_MainPanel extends javax.swing.JFrame
 {
+
     private final BTC_ConnectionManager connectionManager = new BTC_ConnectionManager();
     private final List<PlayerInfo> playerList = new ArrayList<>();
     private final PlayerListTableModel playerListTableModel = new PlayerListTableModel(playerList);
@@ -53,7 +54,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
             {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER)
                 {
-                    BTC_MainPanel.this.saveServersAndTriggerConnect();
+                    BTC_MainPanel.this.triggerConnect();
                 }
             }
         });
@@ -197,6 +198,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
 
     public static class PlayerListTableModel extends AbstractTableModel
     {
+
         private final List<PlayerInfo> _playerList;
 
         public PlayerListTableModel(List<PlayerInfo> playerList)
@@ -269,6 +271,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
 
     public static class PlayerListPopupItem extends JMenuItem
     {
+
         private final PlayerInfo player;
 
         public PlayerListPopupItem(String text, PlayerInfo player)
@@ -285,6 +288,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
 
     public static class PlayerListPopupItem_Command extends PlayerListPopupItem
     {
+
         private final PlayerCommandEntry command;
 
         public PlayerListPopupItem_Command(String text, PlayerInfo player, PlayerCommandEntry command)
@@ -428,12 +432,19 @@ public class BTC_MainPanel extends javax.swing.JFrame
         }
     }
 
-    public final void saveServersAndTriggerConnect()
+    public final void triggerConnect()
+    {
+        ServerEntry entry = saveServers();
+        loadServerList();
+        getConnectionManager().triggerConnect(entry.getAddress());
+    }
+
+    public final ServerEntry saveServers()
     {
         final Object selectedItem = txtServer.getSelectedItem();
         if (selectedItem == null)
         {
-            return;
+            return null;
         }
 
         ServerEntry entry;
@@ -446,13 +457,13 @@ public class BTC_MainPanel extends javax.swing.JFrame
             final String serverAddress = StringUtils.trimToNull(selectedItem.toString());
             if (serverAddress == null)
             {
-                return;
+                return null;
             }
 
             String serverName = JOptionPane.showInputDialog(this, "Enter server name:", "Server Name", JOptionPane.PLAIN_MESSAGE);
             if (serverName == null)
             {
-                return;
+                return null;
             }
 
             serverName = StringUtils.trimToEmpty(serverName);
@@ -466,22 +477,8 @@ public class BTC_MainPanel extends javax.swing.JFrame
             BukkitTelnetClient.config.getServers().add(entry);
         }
 
-        for (final ServerEntry existingEntry : BukkitTelnetClient.config.getServers())
-        {
-            if (entry.equals(existingEntry))
-            {
-                entry = existingEntry;
-            }
-            existingEntry.setLastUsed(false);
-        }
-
-        entry.setLastUsed(true);
-
         BukkitTelnetClient.config.save();
-
-        loadServerList();
-
-        getConnectionManager().triggerConnect(entry.getAddress());
+        return entry;
     }
 
     @SuppressWarnings("unchecked")
@@ -495,7 +492,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
         mainOutput = new javax.swing.JTextPane();
         btnDisconnect = new javax.swing.JButton();
         btnSend = new javax.swing.JButton();
-        txtServer = new javax.swing.JComboBox<me.StevenLawson.BukkitTelnetClient.ServerEntry>();
+        txtServer = new javax.swing.JComboBox<>();
         chkAutoScroll = new javax.swing.JCheckBox();
         txtCommand = new javax.swing.JTextField();
         btnConnect = new javax.swing.JButton();
@@ -520,13 +517,21 @@ public class BTC_MainPanel extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("BukkitTelnetClient");
 
+        splitPane.setBackground(new java.awt.Color(68, 68, 68));
+        splitPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(68, 68, 68), 5));
         splitPane.setResizeWeight(1.0);
 
+        jPanel3.setBackground(new java.awt.Color(68, 68, 68));
+
         mainOutput.setEditable(false);
-        mainOutput.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        mainOutput.setBackground(new java.awt.Color(0, 0, 0));
+        mainOutput.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        mainOutput.setForeground(new java.awt.Color(255, 255, 255));
         mainOutputScoll.setViewportView(mainOutput);
 
-        btnDisconnect.setText("Disconnect");
+        btnDisconnect.setBackground(new java.awt.Color(68, 68, 68));
+        btnDisconnect.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        btnDisconnect.setText("Leave");
         btnDisconnect.setEnabled(false);
         btnDisconnect.addActionListener(new java.awt.event.ActionListener()
         {
@@ -536,6 +541,8 @@ public class BTC_MainPanel extends javax.swing.JFrame
             }
         });
 
+        btnSend.setBackground(new java.awt.Color(68, 68, 68));
+        btnSend.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
         btnSend.setText("Send");
         btnSend.setEnabled(false);
         btnSend.addActionListener(new java.awt.event.ActionListener()
@@ -546,10 +553,22 @@ public class BTC_MainPanel extends javax.swing.JFrame
             }
         });
 
+        txtServer.setBackground(new java.awt.Color(91, 91, 91));
         txtServer.setEditable(true);
+        txtServer.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        txtServer.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                txtServerActionPerformed(evt);
+            }
+        });
 
+        chkAutoScroll.setBackground(new java.awt.Color(68, 68, 68));
+        chkAutoScroll.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        chkAutoScroll.setForeground(new java.awt.Color(255, 255, 255));
         chkAutoScroll.setSelected(true);
-        chkAutoScroll.setText("AutoScroll");
+        chkAutoScroll.setText("Auto Scroll");
 
         txtCommand.setEnabled(false);
         txtCommand.addKeyListener(new java.awt.event.KeyAdapter()
@@ -560,7 +579,9 @@ public class BTC_MainPanel extends javax.swing.JFrame
             }
         });
 
-        btnConnect.setText("Connect");
+        btnConnect.setBackground(new java.awt.Color(68, 68, 68));
+        btnConnect.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        btnConnect.setText("Join");
         btnConnect.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -569,8 +590,14 @@ public class BTC_MainPanel extends javax.swing.JFrame
             }
         });
 
+        jLabel1.setBackground(new java.awt.Color(68, 68, 68));
+        jLabel1.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Command:");
 
+        jLabel2.setBackground(new java.awt.Color(68, 68, 68));
+        jLabel2.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Server:");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -588,7 +615,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCommand)
-                            .addComponent(txtServer, 0, 431, Short.MAX_VALUE))
+                            .addComponent(txtServer, 0, 411, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnConnect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -606,7 +633,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainOutputScoll, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addComponent(mainOutputScoll, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCommand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -624,14 +651,26 @@ public class BTC_MainPanel extends javax.swing.JFrame
 
         splitPane.setLeftComponent(jPanel3);
 
+        jTabbedPane1.setBackground(new java.awt.Color(68, 68, 68));
+        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTabbedPane1.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+
+        jPanel2.setBackground(new java.awt.Color(68, 68, 68));
+
         tblPlayers.setAutoCreateRowSorter(true);
+        tblPlayers.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
         tblPlayers.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblPlayersScroll.setViewportView(tblPlayers);
         tblPlayers.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        jLabel3.setBackground(new java.awt.Color(68, 68, 68));
+        jLabel3.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("# Players:");
 
         txtNumPlayers.setEditable(false);
+        txtNumPlayers.setBackground(new java.awt.Color(255, 255, 255));
+        txtNumPlayers.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -652,7 +691,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tblPlayersScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addComponent(tblPlayersScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -662,12 +701,24 @@ public class BTC_MainPanel extends javax.swing.JFrame
 
         jTabbedPane1.addTab("Player List", jPanel2);
 
+        jPanel1.setBackground(new java.awt.Color(68, 68, 68));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(68, 68, 68)));
+
+        chkIgnorePlayerCommands.setBackground(new java.awt.Color(68, 68, 68));
+        chkIgnorePlayerCommands.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        chkIgnorePlayerCommands.setForeground(new java.awt.Color(255, 255, 255));
         chkIgnorePlayerCommands.setSelected(true);
         chkIgnorePlayerCommands.setText("Ignore \"[PLAYER_COMMAND]\" messages");
 
+        chkIgnoreServerCommands.setBackground(new java.awt.Color(68, 68, 68));
+        chkIgnoreServerCommands.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        chkIgnoreServerCommands.setForeground(new java.awt.Color(255, 255, 255));
         chkIgnoreServerCommands.setSelected(true);
         chkIgnoreServerCommands.setText("Ignore \"issued server command\" messages");
 
+        chkShowChatOnly.setBackground(new java.awt.Color(68, 68, 68));
+        chkShowChatOnly.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        chkShowChatOnly.setForeground(new java.awt.Color(255, 255, 255));
         chkShowChatOnly.setText("Show chat only");
         chkShowChatOnly.addActionListener(new java.awt.event.ActionListener()
         {
@@ -677,7 +728,17 @@ public class BTC_MainPanel extends javax.swing.JFrame
             }
         });
 
+        chkIgnoreErrors.setBackground(new java.awt.Color(68, 68, 68));
+        chkIgnoreErrors.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
+        chkIgnoreErrors.setForeground(new java.awt.Color(255, 255, 255));
         chkIgnoreErrors.setText("Ignore warnings and errors");
+        chkIgnoreErrors.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                chkIgnoreErrorsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -690,7 +751,7 @@ public class BTC_MainPanel extends javax.swing.JFrame
                     .addComponent(chkIgnoreServerCommands)
                     .addComponent(chkShowChatOnly)
                     .addComponent(chkIgnoreErrors))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -703,15 +764,19 @@ public class BTC_MainPanel extends javax.swing.JFrame
                 .addComponent(chkShowChatOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkIgnoreErrors, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(307, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Filters", jPanel1);
+
+        jPanel4.setBackground(new java.awt.Color(68, 68, 68));
+        jPanel4.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 12)); // NOI18N
 
         favoriteButtonsPanelHolder.setLayout(new java.awt.BorderLayout());
 
         favoriteButtonsPanelScroll.setBorder(null);
 
+        favoriteButtonsPanel.setBackground(new java.awt.Color(68, 68, 68));
         favoriteButtonsPanel.setLayout(null);
         favoriteButtonsPanelScroll.setViewportView(favoriteButtonsPanel);
 
@@ -749,14 +814,32 @@ public class BTC_MainPanel extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(splitPane)
-                .addGap(0, 0, 0))
+            .addComponent(splitPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void chkIgnoreErrorsActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chkIgnoreErrorsActionPerformed
+    {//GEN-HEADEREND:event_chkIgnoreErrorsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkIgnoreErrorsActionPerformed
+
+    private void chkShowChatOnlyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chkShowChatOnlyActionPerformed
+    {//GEN-HEADEREND:event_chkShowChatOnlyActionPerformed
+        boolean enable = !chkShowChatOnly.isSelected();
+        chkIgnorePlayerCommands.setEnabled(enable);
+        chkIgnoreServerCommands.setEnabled(enable);
+    }//GEN-LAST:event_chkShowChatOnlyActionPerformed
+
+    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConnectActionPerformed
+    {//GEN-HEADEREND:event_btnConnectActionPerformed
+        if (!btnConnect.isEnabled())
+        {
+            return;
+        }
+        triggerConnect();
+    }//GEN-LAST:event_btnConnectActionPerformed
 
     private void txtCommandKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_txtCommandKeyPressed
     {//GEN-HEADEREND:event_txtCommandKeyPressed
@@ -771,24 +854,6 @@ public class BTC_MainPanel extends javax.swing.JFrame
         }
     }//GEN-LAST:event_txtCommandKeyPressed
 
-    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConnectActionPerformed
-    {//GEN-HEADEREND:event_btnConnectActionPerformed
-        if (!btnConnect.isEnabled())
-        {
-            return;
-        }
-        saveServersAndTriggerConnect();
-    }//GEN-LAST:event_btnConnectActionPerformed
-
-    private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnDisconnectActionPerformed
-    {//GEN-HEADEREND:event_btnDisconnectActionPerformed
-        if (!btnDisconnect.isEnabled())
-        {
-            return;
-        }
-        getConnectionManager().triggerDisconnect();
-    }//GEN-LAST:event_btnDisconnectActionPerformed
-
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSendActionPerformed
     {//GEN-HEADEREND:event_btnSendActionPerformed
         if (!btnSend.isEnabled())
@@ -799,12 +864,19 @@ public class BTC_MainPanel extends javax.swing.JFrame
         txtCommand.selectAll();
     }//GEN-LAST:event_btnSendActionPerformed
 
-    private void chkShowChatOnlyActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chkShowChatOnlyActionPerformed
-    {//GEN-HEADEREND:event_chkShowChatOnlyActionPerformed
-        boolean enable = !chkShowChatOnly.isSelected();
-        chkIgnorePlayerCommands.setEnabled(enable);
-        chkIgnoreServerCommands.setEnabled(enable);
-    }//GEN-LAST:event_chkShowChatOnlyActionPerformed
+    private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnDisconnectActionPerformed
+    {//GEN-HEADEREND:event_btnDisconnectActionPerformed
+        if (!btnDisconnect.isEnabled())
+        {
+            return;
+        }
+        getConnectionManager().triggerDisconnect();
+    }//GEN-LAST:event_btnDisconnectActionPerformed
+
+    private void txtServerActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_txtServerActionPerformed
+    {//GEN-HEADEREND:event_txtServerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtServerActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConnect;

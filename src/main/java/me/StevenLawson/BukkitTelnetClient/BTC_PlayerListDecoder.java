@@ -25,6 +25,7 @@ import org.json.*;
 
 public class BTC_PlayerListDecoder
 {
+
     private static final Pattern PLAYER_LIST_MESSAGE = Pattern.compile(":\\[.+@BukkitTelnet\\]\\$ playerList~(.+)");
 
     private BTC_PlayerListDecoder()
@@ -86,6 +87,7 @@ public class BTC_PlayerListDecoder
 
     public static final class JSONArrayIterable implements Iterable<JSONObject>
     {
+
         private final JSONArray array;
 
         public JSONArrayIterable(JSONArray array)

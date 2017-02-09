@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class PlayerCommandEntry extends ConfigEntry
 {
+
     private String name;
     private String format;
 
@@ -84,6 +85,7 @@ public class PlayerCommandEntry extends ConfigEntry
 
     public static class PlayerCommandEntryList extends ConfigEntryList<PlayerCommandEntry>
     {
+
         public PlayerCommandEntryList()
         {
             super(new ArrayList<PlayerCommandEntry>(), PlayerCommandEntry.class);

@@ -23,6 +23,7 @@ import java.util.Objects;
 
 public class ServerEntry extends ConfigEntry
 {
+
     private String name;
     private String address;
     private boolean lastUsed = false;
@@ -119,6 +120,7 @@ public class ServerEntry extends ConfigEntry
 
     public static class ServerEntryList extends ConfigEntryList<ServerEntry>
     {
+
         public ServerEntryList()
         {
             super(new HashSet<ServerEntry>(), ServerEntry.class);

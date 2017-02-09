@@ -25,6 +25,7 @@ import org.w3c.dom.*;
 
 public abstract class ConfigEntry
 {
+
     public abstract String getElementName();
 
     public ConfigEntry fromXML(final Document doc)

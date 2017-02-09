@@ -25,6 +25,7 @@ import org.w3c.dom.*;
 
 public abstract class ConfigEntryList<E extends ConfigEntry>
 {
+
     private final Collection<E> list;
     private final Class<E> entryClass;
 

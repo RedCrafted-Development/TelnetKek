@@ -3,24 +3,28 @@
     <servers/>
     <playerCommands>
         <playerCommand>
-            <name>Ban</name>
-            <format>glist ban $TARGET_NAME</format>
+            <name>Glist Ban</name>
+            <format>glist ban $TARGET_NAME $REASON</format>
         </playerCommand>
         <playerCommand>
-            <name>Toggle Mute</name>
+            <name>Mute</name>
             <format>mute $TARGET_NAME</format>
         </playerCommand>
         <playerCommand>
             <name>Kick</name>
-            <format>tempban $TARGET_NAME 10s Kicked</format>
+            <format>kick $TARGET_NAME</format>
         </playerCommand>
         <playerCommand>
-            <name>Tempban 5m + Reason</name>
-            <format>tempban $TARGET_NAME 5m $REASON</format>
+            <name>5m Ban + Reason</name>
+            <format>noob $TARGET_NAME $REASON</format>
         </playerCommand>
         <playerCommand>
-            <name>Tempban 5m</name>
-            <format>tempban $TARGET_NAME 5m</format>
+            <name>5m Ban</name>
+            <format>noob $TARGET_NAME</format>
+        </playerCommand>
+        <playerCommand>
+            <name>Smite + Reason</name>
+            <format>smite $TARGET_NAME $REASON</format>
         </playerCommand>
         <playerCommand>
             <name>Smite</name>
@@ -35,15 +39,15 @@
             <format>deop $TARGET_NAME</format>
         </playerCommand>
         <playerCommand>
-            <name>GTFO + Reason</name>
+            <name>24h Ban + Reason</name>
             <format>gtfo $TARGET_NAME $REASON</format>
         </playerCommand>
         <playerCommand>
-            <name>GTFO</name>
+            <name>24h Ban</name>
             <format>gtfo $TARGET_NAME</format>
         </playerCommand>
         <playerCommand>
-            <name>Toggle Freeze</name>
+            <name>Freeze</name>
             <format>fr $TARGET_NAME</format>
         </playerCommand>
         <playerCommand>
@@ -85,19 +89,15 @@
             <command>opall</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Deop All</label>
-            <command>deopall</command>
-        </favoriteButton>
-        <favoriteButton>
             <label>Nick Clean</label>
-            <command>nickclean</command>
+            <command>nc</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Adminmode ON</label>
+            <label>Enable Adminmode</label>
             <command>adminmode on</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Adminmode OFF</label>
+            <label>Disable Adminmode</label>
             <command>adminmode off</command>
         </favoriteButton>
         <favoriteButton>
@@ -109,7 +109,7 @@
             <command>mp</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Remove Drops</label>
+            <label>Entity Wipe</label>
             <command>rd</command>
         </favoriteButton>
         <favoriteButton>
@@ -117,12 +117,12 @@
             <command>purgeall</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Set Limit = 500</label>
+            <label>Set Limit = 2500</label>
             <command>setl</command>
         </favoriteButton>
         <favoriteButton>
-            <label>Stop Server</label>
-            <command>stop</command>
+            <label>Restart</label>
+            <command>restart</command>
         </favoriteButton>
         <favoriteButton>
             <label>Toggle Water Placement</label>

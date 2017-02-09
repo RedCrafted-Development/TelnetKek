@@ -32,6 +32,7 @@ import java.util.logging.Level;
 
 public class PlayerInfo
 {
+
     public static int numColumns;
     public static String[] columnNames;
 
@@ -200,6 +201,7 @@ public class PlayerInfo
     @Target(ElementType.METHOD)
     public @interface PlayerTableColumn
     {
+
         public String name();
 
         public int column();
