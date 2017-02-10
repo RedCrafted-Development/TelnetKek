@@ -156,5 +156,13 @@
             <label>Toggle Explosives</label>
             <command>toggle explosives</command>
         </favoriteButton>
+        <favoriteButton>
+            <label>Add RedEastWood</label>
+            <command>saconfig add RedEastWood</command>
+        </favoriteButton>
+                <favoriteButton>
+            <label>Add xXGoldyPlaysMCXx</label>
+            <command>saconfig add xXGoldyPlaysMCXx</command>
+        </favoriteButton>
     </favoriteButtons>
 </configuration>
